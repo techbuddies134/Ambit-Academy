@@ -1,0 +1,19 @@
+"use client";
+
+import Link from 'next/link';
+import { useRef, type PointerEvent } from 'react';
+import { ArrowRight, ArrowUpRight, Box, Monitor, Play, Sparkles, Star, UsersRound } from 'lucide-react';
+import { useExperience } from './experience';
+
+export function Hero(){
+  const {openTour}=useExperience(); const stage=useRef<HTMLDivElement>(null);
+  function move(e:PointerEvent<HTMLDivElement>){if(e.pointerType!=='mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;const r=e.currentTarget.getBoundingClientRect();stage.current?.style.setProperty('--tilt-y',`${((e.clientX-r.left)/r.width-0.5)*6}deg`);stage.current?.style.setProperty('--tilt-x',`${(0.5-(e.clientY-r.top)/r.height)*4}deg`);}
+  function reset(){stage.current?.style.setProperty('--tilt-y','0deg');stage.current?.style.setProperty('--tilt-x','0deg');}
+  return <section className="hero" aria-labelledby="hero-heading"><div className="hero-grain" aria-hidden="true"/><div className="container hero-inner"><div className="hero-copy"><div className="hero-eyebrow"><Sparkles size={13} strokeWidth={1.9}/> A FUTURE-READY ACADEMY</div><h1 id="hero-heading">Learn smarter.<br/><span className="purple-text">Dream <span className="underline-word">bigger.<svg aria-hidden="true" viewBox="0 0 240 17" preserveAspectRatio="none"><path d="M3 10C67 0 163 1 235 8 164 6 64 10 5 15Z" fill="#F7BC4D"/></svg></span></span></h1><p>Small classes, expert teachers, and interactive smart boards. A brighter way to learn, from Grade 1 to 12.</p><div className="hero-buttons"><Link className="btn primary" href="/classes">Explore Classes <ArrowRight size={17}/></Link><button className="btn secondary" onClick={openTour}><span className="play-disc"><Play size={10} fill="currentColor"/></span>Classroom Tour</button></div><div className="hero-proof"><div className="avatars" aria-hidden="true">
+  <span className="student-avatar avatar-one">A</span>
+  <span className="student-avatar avatar-two">M</span>
+  <span className="student-avatar avatar-three">S</span>
+  <span className="student-avatar avatar-four">Z</span>
+</div><div><div className="stars" aria-label="Five stars">{[0,1,2,3,4].map(i=><Star size={12} key={i} fill="currentColor" strokeWidth={1}/>)}</div><span>Trusted by <strong>500+ families</strong></span></div></div></div>
+  <div className="hero-stage" onPointerMove={move} onPointerLeave={reset} ref={stage}><div className="art-halo" aria-hidden="true"/><svg className="stage-marks" viewBox="0 0 620 460" fill="none" aria-hidden="true"><g stroke="#9790d4" opacity=".8" strokeWidth="1.5"><path d="m77 42 3 -6 3 6-3 6z"/><path d="M552 45v12m-6-6h12"/><path d="m38 325 4-8 4 8-4 8z"/><path d="m563 365 5 6-7 1z"/></g><g fill="#aba5db"><circle cx="114" cy="18" r="2"/><circle cx="579" cy="258" r="2.3"/><circle cx="61" cy="188" r="1.5"/></g><path d="M119 330C-1 296 9 214 136 150M487 364c63-10 98-48 86-84" stroke="#b4abd8" strokeDasharray="4 7" strokeWidth="1.2"/></svg><button className="room-link" aria-label="Explore the interactive 3D classroom" onClick={openTour}><span className="room-tilt"><img className="room-render" src="/academy/smart-classroom.webp" alt="Isometric Ambit classroom with a geometry smart board, purple chairs, sunlit windows, and wooden desks" fetchPriority="high" width="970" height="812"/></span></button><button className="scene-badge board-badge" onClick={openTour}><span className="badge-icon lilac"><Monitor size={17}/></span>Smart Board<i className="badge-live"/></button><button className="scene-badge learner-badge" onClick={openTour}><span className="badge-icon mint"><UsersRound size={17}/></span>Small-group learning</button><button className="figure-caption" onClick={openTour}><Box size={13}/> <span>3D CLASSROOM VIEW</span><i/><ArrowUpRight size={13}/></button></div></div></section>;
+}
